@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Log;
+use Twilio\Rest\Client;
 use \SimpleXMLElement;
-
 
 class TwilioController extends Controller
 {
@@ -15,7 +14,8 @@ class TwilioController extends Controller
     private $twilioToken;
     private $twilioWpNumber;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->twilioSid = config('chatgpt.twilio_sid');
         $this->twilioToken = config('chatgpt.twilio_token');
         $this->twilioWpNumber = config('chatgpt.twilio_wp_number');
