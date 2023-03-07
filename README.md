@@ -18,4 +18,4 @@
     TWILIO_WP_NUMBER="+<TWILIO_WP_NUMBER>"
     OPENAI_SECRET_KEY="<OPENAI_SECRET_KEY>"
     ```
-### [Demo Video](https://drive.google.com/file/d/1rY_ORk-PtB9dtAKH6O8HJXZTkbuVgxez/view?usp=sharing)
+### [Demo Video](https://drive.google.com/file/d/1FXI9JFFsT88OpGdHaa_x2DK0pQA5vHGt/view?usp=share_link)
