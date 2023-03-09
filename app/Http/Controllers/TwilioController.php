@@ -22,15 +22,18 @@ class TwilioController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Generate ChatGPT response and send it to the twilio
      */
     public function handleIncomingMessage(Request $request): Response
     {
+        // Fetch the message & from nubmer information
         $message = $request->input('Body');
         $from = $request->input('From');
 
+        // Get the response text from openai api
         $responseText = ChatGPT::response($message);
 
+        // Generate the Twiml Response
         $twiml = self::generateTwimlResponse([
             'success' => true,
             'message' => $responseText,
@@ -41,15 +44,15 @@ class TwilioController extends Controller
     }
 
     /**
-     * Send Message from Twilio
+     * Send Whatsapp Message from Twilio
      */
     public function sendMessage(Request $request): void
     {
         try {
-            // create a new Twilio client
+            // Create a new Twilio client
             $twilio = new Client($this->twilioSid, $this->twilioToken);
 
-            // send a WhatsApp message
+            // Send a WhatsApp message
             $message = $twilio->messages->create(
                 $request->toNumber,
                 [
@@ -57,27 +60,27 @@ class TwilioController extends Controller
                     "body" => $request->message,
                 ]
             );
-            Log::debug("Success:", $message->toArray());
+            Log::channel('chatgpt')->debug("Success:{$request->toNumber}", $message->toArray());
         } catch (\Throwable $th) {
-            Log::error("Error:" . $th->getMessage());
+            Log::channel('chatgpt')->error("Error:{$request->toNumber}" . $th->getMessage());
         }
     }
 
     /**
-     * Function generate the twiml xml response
+     * Function will generate the twiml xml response
      */
     public static function generateTwimlResponse(array $array): bool|string
     {
-        // create a new SimpleXMLElement object with a root element of "Response"
+        // Create a new SimpleXMLElement object with a root element of "Response"
         $response = new SimpleXMLElement("<Response></Response>");
 
-        // iterate over the associative array and create a new XML element for each key-value pair
+        // Iterate over the associative array and create a new XML element for each key-value pair
         foreach ($array as $key => $value) {
-            // create a new XML element with the key as the element name and the value as the element text
+            // Create a new XML element with the key as the element name and the value as the element text
             $response->addChild($key, $value);
         }
 
-        // convert the SimpleXMLElement object to a string
+        // Convert the SimpleXMLElement object to a string
         return $response->asXML();
     }
 }

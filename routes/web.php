@@ -18,5 +18,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Twilio Webhook endpoint
 Route::post('incoming-message', [ TwilioController::class, 'handleIncomingMessage']);
+
+// Twilio callback endpoint
 Route::post('send-message', [ TwilioController::class, 'sendMessage']);
